@@ -8,185 +8,248 @@
   @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700;900&display=swap');
   * { margin: 0; padding: 0; box-sizing: border-box; }
 
+  :root {
+    --bg: #ede0c8; --bg2: #faf3e4; --bg3: #f0e6d3; --bg-card: linear-gradient(145deg, #faf3e4, #ede2cc);
+    --border: #d4c4a0; --border-h: #c9a84c;
+    --text: #3a3020; --text2: #5a4a30; --text3: #6a5a40; --text-muted: #9a8a6a;
+    --gold: #c9a84c; --gold-bright: #ffd700;
+    --bar-bg: linear-gradient(135deg, #2a1f10, #4a3520); --bar-border: #c9a84c;
+    --modal-bg: #faf3e4; --modal-border: #c9a84c;
+    --hover-shadow: rgba(0,0,0,0.12); --overlay: rgba(0,0,0,0.5);
+    --tag-bg: #e8d5b0; --tag-text: #8a6a30;
+    --avatar-bg: #e0d4c0;
+    --wf-hover: linear-gradient(145deg,#fff8ec,#faf3e4);
+    --file-hover: #ede2cc; --file-border: #e8d5b0;
+    --transition: 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  [data-theme="dark"] {
+    --bg: #121218; --bg2: #1a1a24; --bg3: #222230; --bg-card: linear-gradient(145deg, #1e1e2a, #16161e);
+    --border: #2a2a3a; --border-h: #c9a84c;
+    --text: #e0dcd4; --text2: #c8c0b0; --text3: #a09888; --text-muted: #706858;
+    --gold: #c9a84c; --gold-bright: #ffd700;
+    --bar-bg: linear-gradient(135deg, #0a0a12, #1a1a28); --bar-border: #c9a84c;
+    --modal-bg: #1a1a24; --modal-border: #3a3a4a;
+    --hover-shadow: rgba(201,168,76,0.15); --overlay: rgba(0,0,0,0.7);
+    --tag-bg: #2a2a3a; --tag-text: #c9a84c;
+    --avatar-bg: #2a2a3a;
+    --wf-hover: linear-gradient(145deg,#252530,#1e1e2a);
+    --file-hover: #252530; --file-border: #2a2a3a;
+  }
+
   body {
     font-family: 'Noto Sans JP', sans-serif;
-    background: #ede0c8;
-    color: #3a3020;
-    min-height: 100vh;
+    background: var(--bg); color: var(--text);
+    min-height: 100vh; transition: background var(--transition), color var(--transition);
   }
 
+  /* ===== Top Bar ===== */
   .top-bar {
-    background: linear-gradient(135deg, #2a1f10, #4a3520);
-    padding: 8px 20px;
+    background: var(--bar-bg); padding: 8px 16px;
     display: flex; align-items: center; justify-content: space-between;
-    border-bottom: 3px solid #c9a84c;
+    border-bottom: 3px solid var(--bar-border);
+    position: sticky; top: 0; z-index: 50;
+    backdrop-filter: blur(10px);
   }
-  .top-bar .logo { font-size: 1.15em; font-weight: 900; color: #ffd700; letter-spacing: 0.08em; }
-  .top-bar .logo small { font-size: 0.65em; color: #c9a84c; font-weight: 400; margin-left: 8px; }
-  .nav-tabs { display: flex; gap: 3px; }
+  .logo { font-size: 1.1em; font-weight: 900; color: var(--gold-bright); letter-spacing: 0.06em; }
+  .logo small { font-size: 0.6em; color: var(--gold); font-weight: 400; margin-left: 6px; }
+  .top-right { display: flex; align-items: center; gap: 6px; }
+  .nav-tabs { display: flex; gap: 2px; }
   .nav-tab {
-    padding: 5px 14px; border-radius: 6px 6px 0 0; font-size: 0.78em;
-    font-weight: 500; cursor: pointer; border: none; color: #c9a84c; background: transparent; transition: all 0.15s;
+    padding: 5px 12px; border-radius: 6px 6px 0 0; font-size: 0.72em;
+    font-weight: 500; cursor: pointer; border: none; color: var(--gold); background: transparent;
+    transition: all 0.15s;
   }
-  .nav-tab.active { background: #c9a84c; color: #2a1f10; font-weight: 700; }
+  .nav-tab.active { background: var(--gold); color: #1a1008; font-weight: 700; }
   .nav-tab:hover:not(.active) { background: rgba(201,168,76,0.2); }
 
-  .container { max-width: 1100px; margin: 0 auto; padding: 20px 14px; }
-
-  .status-bar {
-    display: flex; align-items: center; gap: 14px; margin-bottom: 16px;
-    font-size: 0.72em; color: #8a7a60;
+  /* Theme toggle */
+  .theme-btn {
+    background: none; border: 1.5px solid var(--gold); color: var(--gold);
+    width: 32px; height: 32px; border-radius: 50%; cursor: pointer;
+    font-size: 1em; display: flex; align-items: center; justify-content: center;
+    transition: all 0.2s; flex-shrink: 0;
   }
-  .status-dot { width: 7px; height: 7px; border-radius: 50%; display: inline-block; background: #4caf50; }
+  .theme-btn:hover { background: var(--gold); color: #1a1008; transform: rotate(30deg); }
+
+  .container { max-width: 1100px; margin: 0 auto; padding: 18px 14px; }
+
+  /* ===== Status ===== */
+  .status-bar {
+    display: flex; align-items: center; gap: 12px; margin-bottom: 14px;
+    font-size: 0.7em; color: var(--text-muted);
+  }
+  .status-dot { width: 7px; height: 7px; border-radius: 50%; background: #4caf50; display: inline-block; animation: pulse 2s infinite; }
+  @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.4; } }
 
   /* ===== Character Grid ===== */
   .char-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; margin-bottom: 10px; }
   .char-card {
-    background: linear-gradient(145deg, #faf3e4, #ede2cc);
-    border: 2px solid #d4c4a0; border-radius: 12px;
+    background: var(--bg-card); border: 2px solid var(--border); border-radius: 12px;
     padding: 12px 6px 10px; text-align: center;
-    cursor: pointer; transition: all 0.2s; position: relative;
+    cursor: pointer; transition: all 0.25s ease; position: relative;
   }
   .char-card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 6px 18px rgba(0,0,0,0.12);
-    border-color: #c9a84c;
+    transform: translateY(-4px) scale(1.02);
+    box-shadow: 0 8px 24px var(--hover-shadow);
+    border-color: var(--border-h);
   }
+  .char-card:active { transform: translateY(-1px) scale(0.98); }
   .char-card.has-notif::after {
     content: attr(data-n); position: absolute; top: 6px; right: 6px;
     background: #e74c3c; color: #fff; font-size: 0.6em;
     min-width: 16px; height: 16px; border-radius: 50%;
     display: flex; align-items: center; justify-content: center; font-weight: 700;
+    animation: notif-bounce 1s ease infinite;
   }
+  @keyframes notif-bounce { 0%,100% { transform: scale(1); } 50% { transform: scale(1.15); } }
 
-  /* ===== Avatar with image fallback ===== */
+  /* ===== Avatar ===== */
   .avatar {
     width: 76px; height: 76px; margin: 0 auto 6px;
     border-radius: 50%; overflow: hidden;
-    position: relative; background: #e0d4c0;
+    position: relative; background: var(--avatar-bg);
+    border: 2px solid transparent;
+    transition: border-color 0.2s;
   }
-  .avatar img {
-    width: 100%; height: 100%; object-fit: cover;
-    display: block; border-radius: 50%;
-  }
-  .avatar svg {
-    width: 100%; height: 100%;
-    position: absolute; top: 0; left: 0;
-  }
-  /* When img loads, hide SVG fallback */
+  .char-card:hover .avatar { border-color: var(--gold); }
+  .avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .avatar svg { width: 100%; height: 100%; position: absolute; top: 0; left: 0; }
   .avatar img.loaded + svg { display: none; }
 
-  .role-name { font-size: 0.82em; font-weight: 700; color: #3a3020; letter-spacing: 0.03em; }
-  .char-label { font-size: 0.62em; color: #9a8a6a; margin-top: 1px; }
-  .rank-dot {
-    display: inline-block; width: 7px; height: 7px; border-radius: 50%;
-    margin-right: 2px; vertical-align: middle;
-  }
+  .role-name { font-size: 0.8em; font-weight: 700; color: var(--text); letter-spacing: 0.03em; transition: color var(--transition); }
+  .char-label { font-size: 0.6em; color: var(--text-muted); margin-top: 1px; transition: color var(--transition); }
+  .rank-dot { display: inline-block; width: 7px; height: 7px; border-radius: 50%; margin-right: 2px; vertical-align: middle; }
   .rank-dot.g { background: linear-gradient(135deg,#ffd700,#daa520); box-shadow: 0 0 3px rgba(255,215,0,0.5); }
   .rank-dot.b { background: linear-gradient(135deg,#cd7f32,#a0522d); }
   .rank-dot.god { background: linear-gradient(135deg,#40c0ff,#1050b0); box-shadow: 0 0 4px rgba(64,192,255,0.5); }
 
   /* Tooltip */
   .tip {
-    display: none; position: absolute; bottom: calc(100% + 8px); left: 50%;
-    transform: translateX(-50%); background: #2a1f10; color: #f0e6d3;
-    padding: 10px 14px; border-radius: 8px; font-size: 0.72em;
-    z-index: 100; box-shadow: 0 4px 16px rgba(0,0,0,0.3);
-    text-align: left; width: 240px; line-height: 1.5;
+    display: none; position: absolute; bottom: calc(100% + 10px); left: 50%;
+    transform: translateX(-50%); background: #1a1408; color: #f0e6d3;
+    padding: 10px 14px; border-radius: 10px; font-size: 0.7em;
+    z-index: 100; box-shadow: 0 6px 24px rgba(0,0,0,0.4);
+    text-align: left; width: 230px; line-height: 1.5;
+    border: 1px solid rgba(201,168,76,0.3);
+    animation: tipIn 0.15s ease;
   }
+  @keyframes tipIn { from { opacity: 0; transform: translateX(-50%) translateY(4px); } to { opacity: 1; transform: translateX(-50%) translateY(0); } }
   .tip::after {
     content: ''; position: absolute; top: 100%; left: 50%; transform: translateX(-50%);
-    border: 6px solid transparent; border-top-color: #2a1f10;
+    border: 6px solid transparent; border-top-color: #1a1408;
   }
   .char-card:hover .tip { display: block; }
-  .tip .t-name { font-weight: 700; color: #ffd700; margin-bottom: 3px; }
-  .tip .t-skill { color: #c9a84c; font-style: italic; margin-top: 4px; font-size: 0.92em; }
+  .tip .t-name { font-weight: 700; color: var(--gold-bright); margin-bottom: 3px; }
+  .tip .t-skill { color: var(--gold); font-style: italic; margin-top: 4px; font-size: 0.9em; }
 
   /* ===== Sections ===== */
-  .section { margin-bottom: 18px; }
+  .section {
+    margin-bottom: 18px; background: var(--bg2); border-radius: 12px;
+    padding: 14px; border: 1px solid var(--border);
+    transition: background var(--transition), border-color var(--transition);
+  }
   .sec-head {
     display: flex; align-items: center; gap: 10px;
-    margin-bottom: 8px; padding-bottom: 5px; border-bottom: 2px solid #d4c4a0;
+    margin-bottom: 8px; padding-bottom: 6px; border-bottom: 1.5px solid var(--border);
   }
-  .sec-head h2 { font-size: 0.95em; font-weight: 700; color: #5a4a30; }
-  .sec-tag { padding: 2px 9px; border-radius: 4px; font-size: 0.65em; font-weight: 500; background: #e8d5b0; color: #8a6a30; }
-  .sec-tag.new { background: #c9a84c; color: #fff; }
+  .sec-head h2 { font-size: 0.92em; font-weight: 700; color: var(--text2); transition: color var(--transition); }
+  .sec-tag { padding: 2px 9px; border-radius: 4px; font-size: 0.63em; font-weight: 500; background: var(--tag-bg); color: var(--tag-text); transition: all var(--transition); }
+  .sec-tag.new { background: var(--gold); color: #fff; }
 
-  .wf-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(95px, 1fr)); gap: 7px; }
+  .wf-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(92px, 1fr)); gap: 7px; }
   .wf-item {
-    background: linear-gradient(145deg, #faf3e4, #f0e6d3);
-    border: 1.5px solid #d4c4a0; border-radius: 8px;
+    background: var(--bg-card); border: 1.5px solid var(--border); border-radius: 8px;
     padding: 8px 4px; text-align: center; cursor: pointer;
-    transition: all 0.15s; min-height: 72px;
+    transition: all 0.2s; min-height: 68px;
     display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px;
   }
-  .wf-item:hover { border-color: #c9a84c; box-shadow: 0 2px 8px rgba(0,0,0,0.07); background: linear-gradient(145deg,#fff8ec,#faf3e4); }
-  .wf-item .wi { font-size: 1.5em; opacity: 0.7; }
-  .wf-item .wl { font-size: 0.68em; font-weight: 500; color: #6a5a40; line-height: 1.3; }
+  .wf-item:hover { border-color: var(--border-h); box-shadow: 0 2px 10px var(--hover-shadow); background: var(--wf-hover); transform: translateY(-2px); }
+  .wf-item:active { transform: translateY(0); }
+  .wf-item .wi { font-size: 1.4em; opacity: 0.75; transition: opacity 0.2s; }
+  .wf-item:hover .wi { opacity: 1; }
+  .wf-item .wl { font-size: 0.66em; font-weight: 500; color: var(--text3); line-height: 1.3; transition: color var(--transition); }
 
   .wf-head { display: flex; align-items: center; gap: 6px; margin-bottom: 7px; }
-  .mini-av {
-    width: 28px; height: 28px; border-radius: 50%; overflow: hidden; flex-shrink: 0;
-    background: #e0d4c0;
-  }
+  .mini-av { width: 28px; height: 28px; border-radius: 50%; overflow: hidden; flex-shrink: 0; background: var(--avatar-bg); transition: background var(--transition); }
   .mini-av img { width: 100%; height: 100%; object-fit: cover; display: block; }
-  .mini-av svg { width: 100%; height: 100%; }
   .wf-info { display: flex; flex-direction: column; }
-  .wf-cn { font-size: 0.72em; font-weight: 700; color: #5a4a30; }
-  .wf-cr { font-size: 0.62em; color: #9a8a6a; }
+  .wf-cn { font-size: 0.7em; font-weight: 700; color: var(--text2); transition: color var(--transition); }
+  .wf-cr { font-size: 0.6em; color: var(--text-muted); transition: color var(--transition); }
 
+  /* ===== Footer ===== */
   .footer {
-    text-align: center; padding: 16px; color: #b0a080; font-size: 0.72em;
-    border-top: 2px solid #d4c4a0; margin-top: 16px;
+    text-align: center; padding: 16px; color: var(--text-muted); font-size: 0.7em;
+    border-top: 1.5px solid var(--border); margin-top: 16px;
+    transition: all var(--transition);
   }
-  .footer .gt { color: #c9a84c; font-weight: 700; }
+  .footer .gt { color: var(--gold); font-weight: 700; }
 
-  /* Modal overlay */
+  /* ===== Modal ===== */
   .modal-overlay {
     display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
-    background: rgba(0,0,0,0.5); z-index: 200;
+    background: var(--overlay); z-index: 200;
     align-items: center; justify-content: center;
+    animation: fadeIn 0.2s ease;
   }
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
   .modal-overlay.show { display: flex; }
   .modal {
-    background: #faf3e4; border: 2px solid #c9a84c; border-radius: 14px;
-    padding: 20px; max-width: 500px; width: 90%; max-height: 80vh;
+    background: var(--modal-bg); border: 2px solid var(--modal-border); border-radius: 16px;
+    padding: 20px; max-width: 500px; width: 92%; max-height: 80vh;
     overflow-y: auto; position: relative;
+    animation: modalIn 0.25s ease;
+    transition: background var(--transition), border-color var(--transition);
   }
-  .modal h3 { font-size: 1em; color: #5a4a30; margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
+  @keyframes modalIn { from { opacity: 0; transform: scale(0.95) translateY(10px); } to { opacity: 1; transform: scale(1) translateY(0); } }
+  .modal h3 { font-size: 1em; color: var(--text2); margin-bottom: 8px; display: flex; align-items: center; gap: 8px; transition: color var(--transition); }
   .modal .close-btn {
     position: absolute; top: 10px; right: 14px; cursor: pointer;
-    font-size: 1.2em; color: #9a8a6a; background: none; border: none;
+    font-size: 1.2em; color: var(--text-muted); background: none; border: none;
+    transition: color 0.2s, transform 0.2s;
   }
+  .modal .close-btn:hover { color: var(--gold); transform: rotate(90deg); }
   .modal .file-list { list-style: none; padding: 0; }
   .modal .file-list li {
-    padding: 6px 10px; border-bottom: 1px solid #e8d5b0;
-    font-size: 0.8em; color: #5a4a30; cursor: pointer; transition: background 0.15s;
+    padding: 8px 10px; border-bottom: 1px solid var(--file-border);
+    font-size: 0.8em; color: var(--text2); cursor: pointer;
+    transition: background 0.15s, color var(--transition);
     display: flex; align-items: center; gap: 6px;
+    border-radius: 6px;
   }
-  .modal .file-list li:hover { background: #ede2cc; }
+  .modal .file-list li:hover { background: var(--file-hover); }
+  .modal .file-list li:last-child { border-bottom: none; }
   .modal .file-list li .f-icon { opacity: 0.5; }
-  .modal .file-list li .f-date { color: #9a8a6a; font-size: 0.85em; margin-left: auto; }
-  .modal .dept-path { font-size: 0.7em; color: #9a8a6a; margin-bottom: 8px; font-family: monospace; }
-  .modal .empty { font-size: 0.8em; color: #b0a080; font-style: italic; padding: 12px 0; }
+  .modal .file-list li .f-date { color: var(--text-muted); font-size: 0.83em; margin-left: auto; transition: color var(--transition); }
+  .modal .dept-path { font-size: 0.68em; color: var(--text-muted); margin-bottom: 8px; font-family: monospace; transition: color var(--transition); }
+  .modal .empty { font-size: 0.8em; color: var(--text-muted); font-style: italic; padding: 12px 0; }
 
+  /* ===== Responsive ===== */
   @media (max-width: 768px) {
     .char-grid { grid-template-columns: repeat(3, 1fr); }
     .wf-grid { grid-template-columns: repeat(3, 1fr); }
+    .nav-tabs { display: none; }
+    .top-bar { padding: 8px 12px; }
   }
-  @media (max-width: 480px) { .char-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 480px) {
+    .char-grid { grid-template-columns: repeat(2, 1fr); }
+    .wf-grid { grid-template-columns: repeat(2, 1fr); }
+  }
 </style>
 </head>
 <body>
 
 <div class="top-bar">
   <div class="logo">聖闘士オフィス<small>SAINT OFFICE</small></div>
-  <div class="nav-tabs">
-    <button class="nav-tab active">トップ</button>
-    <button class="nav-tab">組織図</button>
-    <button class="nav-tab">更新情報</button>
-    <button class="nav-tab">ツール</button>
-    <button class="nav-tab">タスク</button>
+  <div class="top-right">
+    <div class="nav-tabs">
+      <button class="nav-tab active">トップ</button>
+      <button class="nav-tab">組織図</button>
+      <button class="nav-tab">更新情報</button>
+      <button class="nav-tab">ツール</button>
+      <button class="nav-tab">タスク</button>
+    </div>
+    <button class="theme-btn" onclick="toggleTheme()" title="テーマ切替">🌙</button>
   </div>
 </div>
 
@@ -199,182 +262,77 @@
 
   <!-- ===== Row 1: Gold Saints + Poseidon ===== -->
   <div class="char-grid">
-
-    <!-- サガ -->
     <div class="char-card" data-dept="社長室" data-char="サガ" onclick="showDept(this)">
-      <div class="tip">
-        <div class="t-name">♊ サガ（双子座 / 黄金聖闘士）</div>
-        教皇として聖域を統治した戦略家。二つの人格を持つが善の顔で冷静に統括。
-        <div class="t-skill">ギャラクシアンエクスプロージョン</div>
-      </div>
-      <div class="avatar">
-        <img src="avatars/saga.png" alt="サガ" onerror="this.style.display='none'" onload="this.classList.add('loaded')">
-        <svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="50" fill="#1e1248"/><ellipse cx="50" cy="52" rx="38" ry="42" fill="#3048c8"/><path d="M18 40 Q20 20 35 12 Q50 4 65 12 Q80 20 82 40 Q84 55 78 70 Q60 56 50 58 Q40 56 22 70 Q16 55 18 40Z" fill="#3048c8"/><ellipse cx="50" cy="42" rx="16" ry="19" fill="#f5deb3"/><ellipse cx="42" cy="39" rx="2" ry="2" fill="#2020a0"/><ellipse cx="58" cy="39" rx="2" ry="2" fill="#2020a0"/><path d="M38 35 L46 34" stroke="#1a1a4a" stroke-width="1.5" fill="none"/><path d="M54 34 L62 35" stroke="#1a1a4a" stroke-width="1.5" fill="none"/><path d="M46 50 Q50 52 54 50" fill="none" stroke="#c4987a" stroke-width="1"/><path d="M20 75 Q50 60 80 75 L85 100 L15 100Z" fill="#c9a84c"/><path d="M20 75 Q50 60 80 75" fill="none" stroke="#ffd700" stroke-width="2"/><text x="50" y="85" text-anchor="middle" fill="#ffd700" font-size="14" font-weight="bold">♊</text></svg>
-      </div>
-      <div class="role-name">社長</div>
-      <div class="char-label"><span class="rank-dot g"></span>サガ</div>
+      <div class="tip"><div class="t-name">♊ サガ（双子座 / 黄金聖闘士）</div>教皇として聖域を統治した戦略家。善の顔で冷静に統括。<div class="t-skill">ギャラクシアンエクスプロージョン</div></div>
+      <div class="avatar"><img src="avatars/saga.png" alt="サガ" onerror="this.style.display='none'" onload="this.classList.add('loaded')"><svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="50" fill="#1e1248"/><ellipse cx="50" cy="52" rx="38" ry="42" fill="#3048c8"/><ellipse cx="50" cy="42" rx="16" ry="19" fill="#f5deb3"/><ellipse cx="42" cy="39" rx="2" ry="2" fill="#2020a0"/><ellipse cx="58" cy="39" rx="2" ry="2" fill="#2020a0"/><path d="M20 75 Q50 60 80 75 L85 100 L15 100Z" fill="#c9a84c"/><text x="50" y="85" text-anchor="middle" fill="#ffd700" font-size="14" font-weight="bold">♊</text></svg></div>
+      <div class="role-name">社長</div><div class="char-label"><span class="rank-dot g"></span>サガ</div>
     </div>
 
-    <!-- ムウ -->
     <div class="char-card" data-dept="秘書室" data-char="ムウ" onclick="showDept(this)">
-      <div class="tip">
-        <div class="t-name">🐏 ムウ（牡羊座 / 黄金聖闘士）</div>
-        温厚で面倒見がよい聖衣修復の名手。眉なし＆額の2つの赤い点が特徴。
-        <div class="t-skill">クリスタルウォール / スターダストレボリューション</div>
-      </div>
-      <div class="avatar">
-        <img src="avatars/mu.png" alt="ムウ" onerror="this.style.display='none'" onload="this.classList.add('loaded')">
-        <svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="50" fill="#e8d0f0"/><ellipse cx="50" cy="52" rx="38" ry="42" fill="#d4b0e8"/><path d="M18 40 Q22 14 50 10 Q78 14 82 40 Q84 58 76 74 Q58 56 50 58 Q42 56 24 74 Q16 58 18 40Z" fill="#d4b0e8"/><ellipse cx="50" cy="42" rx="16" ry="19" fill="#f5deb3"/><circle cx="44" cy="29" r="2.2" fill="#c04040"/><circle cx="56" cy="29" r="2.2" fill="#c04040"/><ellipse cx="42" cy="40" rx="2" ry="2.5" fill="#6040a0"/><ellipse cx="58" cy="40" rx="2" ry="2.5" fill="#6040a0"/><path d="M45 51 Q50 54 55 51" fill="none" stroke="#c4987a" stroke-width="1"/><path d="M20 75 Q50 60 80 75 L85 100 L15 100Z" fill="#c9a84c"/><path d="M20 75 Q50 60 80 75" fill="none" stroke="#ffd700" stroke-width="2"/><text x="50" y="85" text-anchor="middle" fill="#ffd700" font-size="14" font-weight="bold">♈</text></svg>
-      </div>
-      <div class="role-name">秘書室長</div>
-      <div class="char-label"><span class="rank-dot g"></span>ムウ</div>
+      <div class="tip"><div class="t-name">🐏 ムウ（牡羊座 / 黄金聖闘士）</div>聖衣修復の名手。眉なし＆額の赤い点が特徴。<div class="t-skill">クリスタルウォール</div></div>
+      <div class="avatar"><img src="avatars/mu.png" alt="ムウ" onerror="this.style.display='none'" onload="this.classList.add('loaded')"><svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="50" fill="#e8d0f0"/><ellipse cx="50" cy="52" rx="38" ry="42" fill="#d4b0e8"/><ellipse cx="50" cy="42" rx="16" ry="19" fill="#f5deb3"/><circle cx="44" cy="29" r="2.2" fill="#c04040"/><circle cx="56" cy="29" r="2.2" fill="#c04040"/><ellipse cx="42" cy="40" rx="2" ry="2.5" fill="#6040a0"/><ellipse cx="58" cy="40" rx="2" ry="2.5" fill="#6040a0"/><path d="M20 75 Q50 60 80 75 L85 100 L15 100Z" fill="#c9a84c"/><text x="50" y="85" text-anchor="middle" fill="#ffd700" font-size="14" font-weight="bold">♈</text></svg></div>
+      <div class="role-name">秘書室長</div><div class="char-label"><span class="rank-dot g"></span>ムウ</div>
     </div>
 
-    <!-- シャカ -->
     <div class="char-card" data-dept="リサーチ" data-char="シャカ" onclick="showDept(this)">
-      <div class="tip">
-        <div class="t-name">🙏 シャカ（乙女座 / 黄金聖闘士）</div>
-        神に最も近い男。金髪ロングで常に目を閉じている。
-        <div class="t-skill">天舞宝輪 / 六道輪廻</div>
-      </div>
-      <div class="avatar">
-        <img src="avatars/shaka.png" alt="シャカ" onerror="this.style.display='none'" onload="this.classList.add('loaded')">
-        <svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="50" fill="#f8f0d0"/><ellipse cx="50" cy="52" rx="38" ry="42" fill="#f0d860"/><path d="M16 42 Q20 12 50 8 Q80 12 84 42 Q86 60 78 76 Q58 58 50 60 Q42 58 22 76 Q14 60 16 42Z" fill="#f0d860"/><ellipse cx="50" cy="42" rx="16" ry="19" fill="#f5deb3"/><path d="M38 39 Q42 41 46 39" fill="none" stroke="#8a6a4a" stroke-width="1.8"/><path d="M54 39 Q58 41 62 39" fill="none" stroke="#8a6a4a" stroke-width="1.8"/><circle cx="50" cy="30" r="1.8" fill="#c04040" opacity="0.7"/><path d="M46 50 Q50 53 54 50" fill="none" stroke="#c4987a" stroke-width="1"/><path d="M20 75 Q50 60 80 75 L85 100 L15 100Z" fill="#c9a84c"/><path d="M20 75 Q50 60 80 75" fill="none" stroke="#ffd700" stroke-width="2"/><text x="50" y="85" text-anchor="middle" fill="#ffd700" font-size="14" font-weight="bold">♍</text></svg>
-      </div>
-      <div class="role-name">戦略軍長</div>
-      <div class="char-label"><span class="rank-dot g"></span>シャカ</div>
+      <div class="tip"><div class="t-name">🙏 シャカ（乙女座 / 黄金聖闘士）</div>神に最も近い男。常に目を閉じている。<div class="t-skill">天舞宝輪</div></div>
+      <div class="avatar"><img src="avatars/shaka.png" alt="シャカ" onerror="this.style.display='none'" onload="this.classList.add('loaded')"><svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="50" fill="#f8f0d0"/><ellipse cx="50" cy="52" rx="38" ry="42" fill="#f0d860"/><ellipse cx="50" cy="42" rx="16" ry="19" fill="#f5deb3"/><path d="M38 39 Q42 41 46 39" fill="none" stroke="#8a6a4a" stroke-width="1.8"/><path d="M54 39 Q58 41 62 39" fill="none" stroke="#8a6a4a" stroke-width="1.8"/><path d="M20 75 Q50 60 80 75 L85 100 L15 100Z" fill="#c9a84c"/><text x="50" y="85" text-anchor="middle" fill="#ffd700" font-size="14" font-weight="bold">♍</text></svg></div>
+      <div class="role-name">戦略軍長</div><div class="char-label"><span class="rank-dot g"></span>シャカ</div>
     </div>
 
-    <!-- カミュ -->
     <div class="char-card" data-dept="経理" data-char="カミュ" onclick="showDept(this)">
-      <div class="tip">
-        <div class="t-name">🏺 カミュ（水瓶座 / 黄金聖闘士）</div>
-        絶対零度を操る厳格な師匠。ティールグリーンの長髪。
-        <div class="t-skill">オーロラエクスキューション</div>
-      </div>
-      <div class="avatar">
-        <img src="avatars/camus.png" alt="カミュ" onerror="this.style.display='none'" onload="this.classList.add('loaded')">
-        <svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="50" fill="#c8e0f0"/><ellipse cx="50" cy="52" rx="38" ry="42" fill="#209090"/><path d="M18 42 Q22 14 50 10 Q78 14 82 42 Q84 60 76 76 Q58 58 50 60 Q42 58 24 76 Q16 60 18 42Z" fill="#209090"/><ellipse cx="50" cy="42" rx="16" ry="19" fill="#f0dab0"/><ellipse cx="42" cy="39.5" rx="1.8" ry="2" fill="#0a5a6a"/><ellipse cx="58" cy="39.5" rx="1.8" ry="2" fill="#0a5a6a"/><path d="M36 35 L47 34" stroke="#0a4a4a" stroke-width="1.5" fill="none"/><path d="M53 34 L64 35" stroke="#0a4a4a" stroke-width="1.5" fill="none"/><path d="M46 51 L54 51" fill="none" stroke="#c4987a" stroke-width="1"/><path d="M20 75 Q50 60 80 75 L85 100 L15 100Z" fill="#c9a84c"/><path d="M20 75 Q50 60 80 75" fill="none" stroke="#ffd700" stroke-width="2"/><text x="50" y="85" text-anchor="middle" fill="#ffd700" font-size="14" font-weight="bold">♒</text></svg>
-      </div>
-      <div class="role-name">財務軍長</div>
-      <div class="char-label"><span class="rank-dot g"></span>カミュ</div>
+      <div class="tip"><div class="t-name">🏺 カミュ（水瓶座 / 黄金聖闘士）</div>絶対零度を操る厳格な師匠。<div class="t-skill">オーロラエクスキューション</div></div>
+      <div class="avatar"><img src="avatars/camus.png" alt="カミュ" onerror="this.style.display='none'" onload="this.classList.add('loaded')"><svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="50" fill="#c8e0f0"/><ellipse cx="50" cy="52" rx="38" ry="42" fill="#209090"/><ellipse cx="50" cy="42" rx="16" ry="19" fill="#f0dab0"/><ellipse cx="42" cy="39.5" rx="1.8" ry="2" fill="#0a5a6a"/><ellipse cx="58" cy="39.5" rx="1.8" ry="2" fill="#0a5a6a"/><path d="M20 75 Q50 60 80 75 L85 100 L15 100Z" fill="#c9a84c"/><text x="50" y="85" text-anchor="middle" fill="#ffd700" font-size="14" font-weight="bold">♒</text></svg></div>
+      <div class="role-name">財務軍長</div><div class="char-label"><span class="rank-dot g"></span>カミュ</div>
     </div>
 
-    <!-- アイオリア -->
     <div class="char-card" data-dept="営業" data-char="アイオリア" onclick="showDept(this)">
-      <div class="tip">
-        <div class="t-name">🦁 アイオリア（獅子座 / 黄金聖闘士）</div>
-        正義と情熱。短めの茶髪がたてがみのように逆立つ。
-        <div class="t-skill">ライトニングプラズマ</div>
-      </div>
-      <div class="avatar">
-        <img src="avatars/aiolia.png" alt="アイオリア" onerror="this.style.display='none'" onload="this.classList.add('loaded')">
-        <svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="50" fill="#f0e0c0"/><ellipse cx="50" cy="38" rx="32" ry="30" fill="#b08030"/><path d="M18 36 Q14 20 24 10 L32 18" fill="#c09040"/><path d="M82 36 Q86 20 76 10 L68 18" fill="#c09040"/><path d="M24 10 Q36 0 50 4 Q64 0 76 10" fill="#c09040"/><ellipse cx="50" cy="42" rx="16" ry="19" fill="#f5deb3"/><ellipse cx="42.5" cy="39.5" rx="2" ry="2.5" fill="#4a6020"/><ellipse cx="58.5" cy="39.5" rx="2" ry="2.5" fill="#4a6020"/><path d="M36 34 L47 34" stroke="#6a4a20" stroke-width="2" fill="none"/><path d="M53 34 L64 34" stroke="#6a4a20" stroke-width="2" fill="none"/><path d="M44 50 Q50 54 56 50" fill="none" stroke="#c4987a" stroke-width="1.2"/><path d="M20 75 Q50 60 80 75 L85 100 L15 100Z" fill="#c9a84c"/><path d="M20 75 Q50 60 80 75" fill="none" stroke="#ffd700" stroke-width="2"/><text x="50" y="85" text-anchor="middle" fill="#ffd700" font-size="14" font-weight="bold">♌</text></svg>
-      </div>
-      <div class="role-name">営業軍長</div>
-      <div class="char-label"><span class="rank-dot g"></span>アイオリア</div>
+      <div class="tip"><div class="t-name">🦁 アイオリア（獅子座 / 黄金聖闘士）</div>正義と情熱の黄金聖闘士。<div class="t-skill">ライトニングプラズマ</div></div>
+      <div class="avatar"><img src="avatars/aiolia.png" alt="アイオリア" onerror="this.style.display='none'" onload="this.classList.add('loaded')"><svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="50" fill="#f0e0c0"/><ellipse cx="50" cy="38" rx="32" ry="30" fill="#c09040"/><ellipse cx="50" cy="42" rx="16" ry="19" fill="#f5deb3"/><ellipse cx="42.5" cy="39.5" rx="2" ry="2.5" fill="#4a6020"/><ellipse cx="58.5" cy="39.5" rx="2" ry="2.5" fill="#4a6020"/><path d="M20 75 Q50 60 80 75 L85 100 L15 100Z" fill="#c9a84c"/><text x="50" y="85" text-anchor="middle" fill="#ffd700" font-size="14" font-weight="bold">♌</text></svg></div>
+      <div class="role-name">営業軍長</div><div class="char-label"><span class="rank-dot g"></span>アイオリア</div>
     </div>
 
-    <!-- ポセイドン -->
     <div class="char-card" data-dept="投資" data-char="ポセイドン" onclick="showDept(this)">
-      <div class="tip">
-        <div class="t-name">🔱 ポセイドン（海皇 / 神）</div>
-        七つの海を支配する海皇。人間体はジュリアン・ソロ。青い長髪と三叉槍。
-        <div class="t-skill">ゴッドブレス / 黄金の三叉槍</div>
-      </div>
-      <div class="avatar">
-        <img src="avatars/poseidon.png" alt="ポセイドン" onerror="this.style.display='none'" onload="this.classList.add('loaded')">
-        <svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="50" fill="#1a3a6a"/><ellipse cx="50" cy="52" rx="40" ry="44" fill="#2060c0"/><path d="M14 42 Q18 10 50 6 Q82 10 86 42 Q88 62 78 78 Q58 58 50 60 Q42 58 22 78 Q12 62 14 42Z" fill="#2060c0"/><path d="M32 22 L36 12 L42 20 L46 10 L50 18 L54 10 L58 20 L64 12 L68 22" fill="none" stroke="#ffd700" stroke-width="2.5"/><circle cx="50" cy="15" r="3" fill="#40c0ff" stroke="#ffd700" stroke-width="1"/><ellipse cx="50" cy="42" rx="16" ry="19" fill="#f0dcc0"/><ellipse cx="42" cy="39.5" rx="2" ry="2.5" fill="#1050b0"/><ellipse cx="58" cy="39.5" rx="2" ry="2.5" fill="#1050b0"/><path d="M36 34 L47 33.5" stroke="#1a3060" stroke-width="1.6" fill="none"/><path d="M53 33.5 L64 34" stroke="#1a3060" stroke-width="1.6" fill="none"/><path d="M45 50 Q50 52 55 50" fill="none" stroke="#c4987a" stroke-width="1"/><path d="M20 75 Q50 60 80 75 L85 100 L15 100Z" fill="#1848a0"/><path d="M20 75 Q50 60 80 75" fill="none" stroke="#ffd700" stroke-width="2.5"/><text x="50" y="72" text-anchor="middle" fill="#ffd700" font-size="12" font-weight="bold">🔱</text></svg>
-      </div>
-      <div class="role-name">投資軍長</div>
-      <div class="char-label"><span class="rank-dot god"></span>ポセイドン</div>
+      <div class="tip"><div class="t-name">🔱 ポセイドン（海皇 / 神）</div>七つの海を支配する海皇。<div class="t-skill">ゴッドブレス</div></div>
+      <div class="avatar"><img src="avatars/poseidon.png" alt="ポセイドン" onerror="this.style.display='none'" onload="this.classList.add('loaded')"><svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="50" fill="#1a3a6a"/><ellipse cx="50" cy="52" rx="40" ry="44" fill="#2060c0"/><path d="M32 22 L36 12 L42 20 L46 10 L50 18 L54 10 L58 20 L64 12 L68 22" fill="none" stroke="#ffd700" stroke-width="2.5"/><circle cx="50" cy="15" r="3" fill="#40c0ff" stroke="#ffd700" stroke-width="1"/><ellipse cx="50" cy="42" rx="16" ry="19" fill="#f0dcc0"/><ellipse cx="42" cy="39.5" rx="2" ry="2.5" fill="#1050b0"/><ellipse cx="58" cy="39.5" rx="2" ry="2.5" fill="#1050b0"/><path d="M20 75 Q50 60 80 75 L85 100 L15 100Z" fill="#1848a0"/><text x="50" y="72" text-anchor="middle" fill="#ffd700" font-size="12">🔱</text></svg></div>
+      <div class="role-name">投資軍長</div><div class="char-label"><span class="rank-dot god"></span>ポセイドン</div>
     </div>
-
   </div>
 
   <!-- ===== Row 2: Bronze Saints ===== -->
-  <div class="char-grid" style="grid-template-columns: repeat(5, 1fr); margin-bottom:22px;">
-
-    <!-- 星矢 -->
+  <div class="char-grid" style="grid-template-columns: repeat(5, 1fr); margin-bottom:20px;">
     <div class="char-card" data-dept="マーケティング" data-char="星矢" onclick="showDept(this)">
-      <div class="tip">
-        <div class="t-name">🦅 星矢（天馬座 / 青銅聖闘士）</div>
-        茶色のツンツン髪。赤い天馬座の聖衣。諦めない熱血の主人公。
-        <div class="t-skill">ペガサス流星拳 / ペガサス彗星拳</div>
-      </div>
-      <div class="avatar">
-        <img src="avatars/seiya.png" alt="星矢" onerror="this.style.display='none'" onload="this.classList.add('loaded')">
-        <svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="50" fill="#f0d0c8"/><ellipse cx="50" cy="34" rx="24" ry="20" fill="#8a5a30"/><path d="M26 28 L20 14 L32 24" fill="#8a5a30"/><path d="M74 28 L80 14 L68 24" fill="#8a5a30"/><path d="M38 16 L34 2 L44 14" fill="#8a5a30"/><path d="M62 16 L66 2 L56 14" fill="#8a5a30"/><path d="M50 14 L50 0 L54 12" fill="#8a5a30"/><ellipse cx="50" cy="42" rx="16" ry="19" fill="#f5deb3"/><ellipse cx="42.5" cy="39.5" rx="2.2" ry="2.8" fill="#5a3010"/><ellipse cx="58.5" cy="39.5" rx="2.2" ry="2.8" fill="#5a3010"/><path d="M36 34 L46 33" stroke="#5a3010" stroke-width="1.8" fill="none"/><path d="M54 33 L64 34" stroke="#5a3010" stroke-width="1.8" fill="none"/><path d="M44 50 Q50 55 56 50" fill="none" stroke="#c4987a" stroke-width="1.2"/><path d="M20 75 Q50 60 80 75 L85 100 L15 100Z" fill="#c0392b"/><path d="M20 75 Q50 60 80 75" fill="none" stroke="#e74c3c" stroke-width="2"/></svg>
-      </div>
-      <div class="role-name">マーケ軍長</div>
-      <div class="char-label"><span class="rank-dot b"></span>星矢</div>
+      <div class="tip"><div class="t-name">🦅 星矢（天馬座 / 青銅聖闘士）</div>諦めない熱血の主人公。<div class="t-skill">ペガサス流星拳</div></div>
+      <div class="avatar"><img src="avatars/seiya.png" alt="星矢" onerror="this.style.display='none'" onload="this.classList.add('loaded')"><svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="50" fill="#f0d0c8"/><ellipse cx="50" cy="34" rx="24" ry="20" fill="#8a5a30"/><ellipse cx="50" cy="42" rx="16" ry="19" fill="#f5deb3"/><ellipse cx="42.5" cy="39.5" rx="2.2" ry="2.8" fill="#5a3010"/><ellipse cx="58.5" cy="39.5" rx="2.2" ry="2.8" fill="#5a3010"/><path d="M20 75 Q50 60 80 75 L85 100 L15 100Z" fill="#c0392b"/></svg></div>
+      <div class="role-name">マーケ軍長</div><div class="char-label"><span class="rank-dot b"></span>星矢</div>
     </div>
 
-    <!-- 紫龍 -->
     <div class="char-card has-notif" data-n="3" data-dept="進行管理" data-char="紫龍" onclick="showDept(this)">
-      <div class="tip">
-        <div class="t-name">🐉 紫龍（龍座 / 青銅聖闘士）</div>
-        長い黒髪を後ろで束ねる。緑の聖衣。堅実な五老峰の修行者。
-        <div class="t-skill">廬山昇龍覇 / 廬山亢龍覇</div>
-      </div>
-      <div class="avatar">
-        <img src="avatars/shiryu.png" alt="紫龍" onerror="this.style.display='none'" onload="this.classList.add('loaded')">
-        <svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="50" fill="#c8e8d8"/><ellipse cx="50" cy="50" rx="32" ry="40" fill="#2a2a3a"/><path d="M22 36 Q26 12 50 8 Q74 12 78 36 Q80 50 74 68 Q58 52 50 54 Q42 52 26 68 Q20 50 22 36Z" fill="#2a2a3a"/><path d="M24 32 Q50 26 76 32" fill="none" stroke="#4a9a6a" stroke-width="3"/><ellipse cx="50" cy="42" rx="16" ry="19" fill="#f0dab0"/><ellipse cx="42" cy="39.5" rx="2" ry="2.5" fill="#1a2a1a"/><ellipse cx="58" cy="39.5" rx="2" ry="2.5" fill="#1a2a1a"/><path d="M37 35 L47 34.5" stroke="#1a1a2a" stroke-width="1.5" fill="none"/><path d="M53 34.5 L63 35" stroke="#1a1a2a" stroke-width="1.5" fill="none"/><path d="M46 50 Q50 52 54 50" fill="none" stroke="#c4987a" stroke-width="1"/><path d="M20 75 Q50 60 80 75 L85 100 L15 100Z" fill="#2a8a4a"/><path d="M20 75 Q50 60 80 75" fill="none" stroke="#4ecdc4" stroke-width="2"/></svg>
-      </div>
-      <div class="role-name">進行管理軍長</div>
-      <div class="char-label"><span class="rank-dot b"></span>紫龍</div>
+      <div class="tip"><div class="t-name">🐉 紫龍（龍座 / 青銅聖闘士）</div>堅実な五老峰の修行者。<div class="t-skill">廬山昇龍覇</div></div>
+      <div class="avatar"><img src="avatars/shiryu.png" alt="紫龍" onerror="this.style.display='none'" onload="this.classList.add('loaded')"><svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="50" fill="#c8e8d8"/><ellipse cx="50" cy="50" rx="32" ry="40" fill="#2a2a3a"/><path d="M24 32 Q50 26 76 32" fill="none" stroke="#4a9a6a" stroke-width="3"/><ellipse cx="50" cy="42" rx="16" ry="19" fill="#f0dab0"/><ellipse cx="42" cy="39.5" rx="2" ry="2.5" fill="#1a2a1a"/><ellipse cx="58" cy="39.5" rx="2" ry="2.5" fill="#1a2a1a"/><path d="M20 75 Q50 60 80 75 L85 100 L15 100Z" fill="#2a8a4a"/></svg></div>
+      <div class="role-name">進行管理軍長</div><div class="char-label"><span class="rank-dot b"></span>紫龍</div>
     </div>
 
-    <!-- 氷河 -->
     <div class="char-card" data-dept="開発" data-char="氷河" onclick="showDept(this)">
-      <div class="tip">
-        <div class="t-name">🦢 氷河（白鳥座 / 青銅聖闘士）</div>
-        金髪。青い白鳥座の聖衣。師カミュの教え子。冷静沈着。
-        <div class="t-skill">ダイヤモンドダスト / オーロラサンダーアタック</div>
-      </div>
-      <div class="avatar">
-        <img src="avatars/hyoga.png" alt="氷河" onerror="this.style.display='none'" onload="this.classList.add('loaded')">
-        <svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="50" fill="#d0e0f8"/><ellipse cx="50" cy="36" rx="28" ry="26" fill="#e0c060"/><path d="M22 34 Q24 10 50 8 Q76 10 78 34 Q80 48 72 60 Q58 48 50 50 Q42 48 28 60 Q20 48 22 34Z" fill="#e0c060"/><ellipse cx="50" cy="42" rx="16" ry="19" fill="#f5e0c0"/><ellipse cx="42" cy="39.5" rx="2" ry="2.5" fill="#2060c0"/><ellipse cx="58" cy="39.5" rx="2" ry="2.5" fill="#2060c0"/><path d="M37 35 L47 34" stroke="#a08030" stroke-width="1.3" fill="none"/><path d="M53 34 L63 35" stroke="#a08030" stroke-width="1.3" fill="none"/><path d="M46 50 Q50 51 54 50" fill="none" stroke="#c4987a" stroke-width="1"/><path d="M20 75 Q50 60 80 75 L85 100 L15 100Z" fill="#2a6aaa"/><path d="M20 75 Q50 60 80 75" fill="none" stroke="#74b9ff" stroke-width="2"/></svg>
-      </div>
-      <div class="role-name">開発軍長</div>
-      <div class="char-label"><span class="rank-dot b"></span>氷河</div>
+      <div class="tip"><div class="t-name">🦢 氷河（白鳥座 / 青銅聖闘士）</div>師カミュの教え子。冷静沈着。<div class="t-skill">ダイヤモンドダスト</div></div>
+      <div class="avatar"><img src="avatars/hyoga.png" alt="氷河" onerror="this.style.display='none'" onload="this.classList.add('loaded')"><svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="50" fill="#d0e0f8"/><ellipse cx="50" cy="36" rx="28" ry="26" fill="#e0c060"/><ellipse cx="50" cy="42" rx="16" ry="19" fill="#f5e0c0"/><ellipse cx="42" cy="39.5" rx="2" ry="2.5" fill="#2060c0"/><ellipse cx="58" cy="39.5" rx="2" ry="2.5" fill="#2060c0"/><path d="M20 75 Q50 60 80 75 L85 100 L15 100Z" fill="#2a6aaa"/></svg></div>
+      <div class="role-name">開発軍長</div><div class="char-label"><span class="rank-dot b"></span>氷河</div>
     </div>
 
-    <!-- 瞬 -->
     <div class="char-card" data-dept="患者管理" data-char="瞬" onclick="showDept(this)">
-      <div class="tip">
-        <div class="t-name">💫 瞬（アンドロメダ座 / 青銅聖闘士）</div>
-        緑の髪。優しく繊細な美少年。一輝の弟。ピンク〜緑の聖衣。
-        <div class="t-skill">ネビュラチェーン / ネビュラストーム</div>
-      </div>
-      <div class="avatar">
-        <img src="avatars/shun.png" alt="瞬" onerror="this.style.display='none'" onload="this.classList.add('loaded')">
-        <svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="50" fill="#d8f0e0"/><ellipse cx="50" cy="42" rx="30" ry="34" fill="#4aaa6a"/><path d="M22 36 Q26 12 50 10 Q74 12 78 36 Q80 52 72 64 Q58 50 50 52 Q42 50 28 64 Q20 52 22 36Z" fill="#4aaa6a"/><ellipse cx="50" cy="42" rx="16" ry="19" fill="#f8e8d0"/><ellipse cx="42" cy="39.5" rx="2.2" ry="2.8" fill="#2a7a4a"/><ellipse cx="58" cy="39.5" rx="2.2" ry="2.8" fill="#2a7a4a"/><path d="M37 35 Q42 33 47 35" fill="none" stroke="#3a7a4a" stroke-width="1"/><path d="M53 35 Q58 33 63 35" fill="none" stroke="#3a7a4a" stroke-width="1"/><path d="M45 50 Q50 54 55 50" fill="none" stroke="#c4987a" stroke-width="1"/><path d="M20 75 Q50 60 80 75 L85 100 L15 100Z" fill="#e08090"/><path d="M20 75 Q50 60 80 75" fill="none" stroke="#fd79a8" stroke-width="2"/></svg>
-      </div>
-      <div class="role-name">患者管理長</div>
-      <div class="char-label"><span class="rank-dot b"></span>瞬</div>
+      <div class="tip"><div class="t-name">💫 瞬（アンドロメダ座 / 青銅聖闘士）</div>優しく繊細な美少年。一輝の弟。<div class="t-skill">ネビュラチェーン</div></div>
+      <div class="avatar"><img src="avatars/shun.png" alt="瞬" onerror="this.style.display='none'" onload="this.classList.add('loaded')"><svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="50" fill="#d8f0e0"/><ellipse cx="50" cy="42" rx="30" ry="34" fill="#4aaa6a"/><ellipse cx="50" cy="42" rx="16" ry="19" fill="#f8e8d0"/><ellipse cx="42" cy="39.5" rx="2.2" ry="2.8" fill="#2a7a4a"/><ellipse cx="58" cy="39.5" rx="2.2" ry="2.8" fill="#2a7a4a"/><path d="M20 75 Q50 60 80 75 L85 100 L15 100Z" fill="#e08090"/></svg></div>
+      <div class="role-name">患者管理長</div><div class="char-label"><span class="rank-dot b"></span>瞬</div>
     </div>
 
-    <!-- 一輝 -->
     <div class="char-card" data-dept="レビュー" data-char="一輝" onclick="showDept(this)">
-      <div class="tip">
-        <div class="t-name">🔥 一輝（鳳凰座 / 青銅聖闘士）</div>
-        濃紺の短髪が激しく逆立つ。鋭い目つき。最強の青銅聖闘士。瞬の兄。
-        <div class="t-skill">鳳翼天翔 / 幻魔拳</div>
-      </div>
-      <div class="avatar">
-        <img src="avatars/ikki.png" alt="一輝" onerror="this.style.display='none'" onload="this.classList.add('loaded')">
-        <svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="50" fill="#e0d0c0"/><ellipse cx="50" cy="34" rx="24" ry="22" fill="#1a1a4a"/><path d="M28 26 L18 8 L34 22" fill="#2a2a5a"/><path d="M72 26 L82 8 L66 22" fill="#2a2a5a"/><path d="M38 16 L32 -2 L44 14" fill="#2a2a5a"/><path d="M62 16 L68 -2 L56 14" fill="#2a2a5a"/><path d="M50 12 L50 -4 L55 10" fill="#2a2a5a"/><ellipse cx="50" cy="42" rx="16" ry="19" fill="#f0d8b0"/><ellipse cx="42" cy="39" rx="3" ry="2" fill="#fff"/><ellipse cx="58" cy="39" rx="3" ry="2" fill="#fff"/><ellipse cx="42.5" cy="39" rx="1.8" ry="1.8" fill="#2a1a4a"/><ellipse cx="58.5" cy="39" rx="1.8" ry="1.8" fill="#2a1a4a"/><path d="M35 33 L47 31" stroke="#1a1a3a" stroke-width="2.2" fill="none"/><path d="M53 31 L65 33" stroke="#1a1a3a" stroke-width="2.2" fill="none"/><path d="M44 51 L56 51" fill="none" stroke="#a07050" stroke-width="1.3"/><path d="M20 75 Q50 60 80 75 L85 100 L15 100Z" fill="#8a2a1a"/><path d="M20 75 Q50 60 80 75" fill="none" stroke="#e17055" stroke-width="2"/></svg>
-      </div>
-      <div class="role-name">レビュー長</div>
-      <div class="char-label"><span class="rank-dot b"></span>一輝</div>
+      <div class="tip"><div class="t-name">🔥 一輝（鳳凰座 / 青銅聖闘士）</div>最強の青銅聖闘士。忖度しない。<div class="t-skill">鳳翼天翔</div></div>
+      <div class="avatar"><img src="avatars/ikki.png" alt="一輝" onerror="this.style.display='none'" onload="this.classList.add('loaded')"><svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="50" fill="#e0d0c0"/><ellipse cx="50" cy="34" rx="24" ry="22" fill="#1a1a4a"/><path d="M28 26 L18 8 L34 22" fill="#2a2a5a"/><path d="M72 26 L82 8 L66 22" fill="#2a2a5a"/><path d="M50 12 L50 -4 L55 10" fill="#2a2a5a"/><ellipse cx="50" cy="42" rx="16" ry="19" fill="#f0d8b0"/><ellipse cx="42.5" cy="39" rx="1.8" ry="1.8" fill="#2a1a4a"/><ellipse cx="58.5" cy="39" rx="1.8" ry="1.8" fill="#2a1a4a"/><path d="M20 75 Q50 60 80 75 L85 100 L15 100Z" fill="#8a2a1a"/></svg></div>
+      <div class="role-name">レビュー長</div><div class="char-label"><span class="rank-dot b"></span>一輝</div>
     </div>
-
   </div>
 
   <!-- ========== WORKFLOW SECTIONS ========== -->
-
-  <!-- 整体院 運営 -->
   <div class="section">
     <div class="sec-head"><h2>整体院 運営</h2><span class="sec-tag">稼働中</span></div>
     <div class="wf-head">
@@ -394,7 +352,6 @@
     </div>
   </div>
 
-  <!-- マーケティング・集客 -->
   <div class="section">
     <div class="sec-head"><h2>マーケティング・集客</h2><span class="sec-tag">稼働中</span></div>
     <div class="wf-head">
@@ -414,7 +371,6 @@
     </div>
   </div>
 
-  <!-- 開発・プロジェクト -->
   <div class="section">
     <div class="sec-head"><h2>開発・プロジェクト</h2><span class="sec-tag">稼働中</span></div>
     <div class="wf-head">
@@ -432,7 +388,6 @@
     </div>
   </div>
 
-  <!-- 投資・資産運用 -->
   <div class="section">
     <div class="sec-head"><h2>投資・資産運用</h2><span class="sec-tag new">NEW</span></div>
     <div class="wf-head">
@@ -449,7 +404,6 @@
     </div>
   </div>
 
-  <!-- 営業・経理 -->
   <div class="section">
     <div class="sec-head"><h2>営業・経理</h2><span class="sec-tag">稼働中</span></div>
     <div class="wf-head">
@@ -484,130 +438,106 @@
 </div>
 
 <script>
-const deptData = {
-  "社長室": {
-    icon: "♊", folder: "社長室",
-    files: [
-      { name: "CLAUDE.md", desc: "振り分け基準・意思決定ルール" },
-      { name: "decisions/", desc: "意思決定ログ", type: "folder" }
-    ]
-  },
-  "秘書室": {
-    icon: "🐏", folder: "秘書室",
-    files: [
-      { name: "inbox/2026-03-10.md", desc: "未整理メモ" },
-      { name: "todos/2026-03-12.md", desc: "最新TODO" },
-      { name: "todos/2026-03-10.md", desc: "TODO" },
-      { name: "notes/", desc: "患者セッションノート 80件+", type: "folder" },
-      { name: "notes/plaud-intake-log.md", desc: "PLAUD取り込みログ" },
-      { name: "notes/plaud-setup-guide.md", desc: "PLAUDセットアップガイド" }
-    ]
-  },
-  "リサーチ": {
-    icon: "🙏", folder: "リサーチ",
-    files: [
-      { name: "topics/2026-03-22-plaud-analysis.md", desc: "PLAUD分析調査" },
-      { name: "nutrition/INDEX.md", desc: "栄養学リサーチ INDEX" }
-    ]
-  },
-  "マーケティング": {
-    icon: "🦅", folder: "マーケティング",
-    files: [
-      { name: "content-plan/", desc: "コンテンツ企画", type: "folder" },
-      { name: "campaigns/", desc: "キャンペーン管理", type: "folder" }
-    ]
-  },
-  "進行管理": {
-    icon: "🐉", folder: "進行管理",
-    files: [
-      { name: "projects/", desc: "プロジェクト管理", type: "folder" },
-      { name: "tickets/", desc: "チケット管理", type: "folder" }
-    ]
-  },
-  "開発": {
-    icon: "🦢", folder: "開発",
-    files: [
-      { name: "docs/", desc: "技術ドキュメント・設計書", type: "folder" },
-      { name: "debug-log/", desc: "デバッグログ", type: "folder" }
-    ]
-  },
-  "経理": {
-    icon: "🏺", folder: "経理",
-    files: [
-      { name: "moneyforward-summary.md", desc: "MoneyForward総合サマリー" },
-      { name: "2026-moneyforward.md", desc: "2026年 家計簿データ" },
-      { name: "2025-moneyforward.md", desc: "2025年 家計簿データ" },
-      { name: "2024-moneyforward.md", desc: "2024年 家計簿データ" },
-      { name: "2026-kakutei-shinkoku-r07.md", desc: "令和7年 確定申告" },
-      { name: "2025-kakutei-shinkoku-r06.md", desc: "令和6年 確定申告" },
-      { name: "2024-kakutei-shinkoku-r05.md", desc: "令和5年 確定申告" },
-      { name: "2026-03-sales-analysis.md", desc: "2026年3月 売上分析" },
-      { name: "2026-03-financial-overview.md", desc: "2026年3月 財務概要" }
-    ]
-  },
-  "営業": {
-    icon: "🦁", folder: "営業",
-    files: [
-      { name: "clients/", desc: "クライアント情報", type: "folder" },
-      { name: "proposals/", desc: "提案書", type: "folder" }
-    ]
-  },
-  "患者管理": {
-    icon: "💫", folder: "患者管理",
-    files: [
-      { name: "patients/", desc: "患者カルテ", type: "folder" },
-      { name: "sessions/", desc: "セッションノート（SOAP）", type: "folder" },
-      { name: "voice-data/", desc: "PLAUDボイスデータ", type: "folder" }
-    ]
-  },
-  "投資": {
-    icon: "🔱", folder: "投資",
-    files: [
-      { name: "analysis/", desc: "投資分析", type: "folder" },
-      { name: "portfolio/", desc: "ポートフォリオ", type: "folder" },
-      { name: "reports/", desc: "投資レポート", type: "folder" }
-    ]
-  },
-  "レビュー": {
-    icon: "🔥", folder: "レビュー",
-    files: [
-      { name: "_template.md", desc: "レビューテンプレート" }
-    ]
+// Theme toggle
+function toggleTheme() {
+  const body = document.body;
+  const btn = document.querySelector('.theme-btn');
+  if (body.getAttribute('data-theme') === 'dark') {
+    body.removeAttribute('data-theme');
+    btn.textContent = '🌙';
+    localStorage.setItem('theme', 'light');
+  } else {
+    body.setAttribute('data-theme', 'dark');
+    btn.textContent = '☀️';
+    localStorage.setItem('theme', 'dark');
   }
+}
+
+// Restore saved theme
+(function() {
+  const saved = localStorage.getItem('theme');
+  if (saved === 'dark' || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+    document.body.setAttribute('data-theme', 'dark');
+    document.querySelector('.theme-btn').textContent = '☀️';
+  }
+})();
+
+// Dept data
+const deptData = {
+  "社長室": { icon: "♊", folder: "社長室", files: [
+    { name: "CLAUDE.md", desc: "振り分け基準・意思決定ルール" },
+    { name: "decisions/", desc: "意思決定ログ", type: "folder" }
+  ]},
+  "秘書室": { icon: "🐏", folder: "秘書室", files: [
+    { name: "inbox/2026-03-10.md", desc: "未整理メモ" },
+    { name: "todos/2026-03-12.md", desc: "最新TODO" },
+    { name: "todos/2026-03-10.md", desc: "TODO" },
+    { name: "notes/", desc: "患者セッションノート 80件+", type: "folder" },
+    { name: "notes/plaud-intake-log.md", desc: "PLAUD取り込みログ" },
+    { name: "notes/plaud-setup-guide.md", desc: "PLAUDセットアップガイド" }
+  ]},
+  "リサーチ": { icon: "🙏", folder: "リサーチ", files: [
+    { name: "topics/2026-03-22-plaud-analysis.md", desc: "PLAUD分析調査" },
+    { name: "nutrition/INDEX.md", desc: "栄養学リサーチ INDEX" }
+  ]},
+  "マーケティング": { icon: "🦅", folder: "マーケティング", files: [
+    { name: "content-plan/", desc: "コンテンツ企画", type: "folder" },
+    { name: "campaigns/", desc: "キャンペーン管理", type: "folder" }
+  ]},
+  "進行管理": { icon: "🐉", folder: "進行管理", files: [
+    { name: "projects/", desc: "プロジェクト管理", type: "folder" },
+    { name: "tickets/", desc: "チケット管理", type: "folder" }
+  ]},
+  "開発": { icon: "🦢", folder: "開発", files: [
+    { name: "docs/", desc: "技術ドキュメント・設計書", type: "folder" },
+    { name: "debug-log/", desc: "デバッグログ", type: "folder" }
+  ]},
+  "経理": { icon: "🏺", folder: "経理", files: [
+    { name: "moneyforward-summary.md", desc: "MoneyForward総合サマリー" },
+    { name: "2026-moneyforward.md", desc: "2026年 家計簿データ" },
+    { name: "2025-moneyforward.md", desc: "2025年 家計簿データ" },
+    { name: "2024-moneyforward.md", desc: "2024年 家計簿データ" },
+    { name: "2026-kakutei-shinkoku-r07.md", desc: "令和7年 確定申告" },
+    { name: "2025-kakutei-shinkoku-r06.md", desc: "令和6年 確定申告" },
+    { name: "2024-kakutei-shinkoku-r05.md", desc: "令和5年 確定申告" },
+    { name: "2026-03-sales-analysis.md", desc: "2026年3月 売上分析" },
+    { name: "2026-03-financial-overview.md", desc: "2026年3月 財務概要" }
+  ]},
+  "営業": { icon: "🦁", folder: "営業", files: [
+    { name: "clients/", desc: "クライアント情報", type: "folder" },
+    { name: "proposals/", desc: "提案書", type: "folder" }
+  ]},
+  "患者管理": { icon: "💫", folder: "患者管理", files: [
+    { name: "patients/", desc: "患者カルテ", type: "folder" },
+    { name: "sessions/", desc: "セッションノート（SOAP）", type: "folder" },
+    { name: "voice-data/", desc: "PLAUDボイスデータ", type: "folder" }
+  ]},
+  "投資": { icon: "🔱", folder: "投資", files: [
+    { name: "analysis/", desc: "投資分析", type: "folder" },
+    { name: "portfolio/", desc: "ポートフォリオ", type: "folder" },
+    { name: "reports/", desc: "投資レポート", type: "folder" }
+  ]},
+  "レビュー": { icon: "🔥", folder: "レビュー", files: [
+    { name: "_template.md", desc: "レビューテンプレート" }
+  ]}
 };
 
 function showDept(el) {
-  const dept = el.dataset.dept;
-  const char = el.dataset.char;
-  const data = deptData[dept];
+  const dept = el.dataset.dept, char = el.dataset.char, data = deptData[dept];
   if (!data) return;
-
   document.getElementById('modal-title').innerHTML = data.icon + ' ' + char + '（' + dept + '）';
   document.getElementById('modal-path').textContent = '.company/' + data.folder + '/';
-
   const list = document.getElementById('modal-files');
   list.innerHTML = '';
-
-  if (data.files.length === 0) {
-    list.innerHTML = '<div class="empty">まだファイルがありません</div>';
-  } else {
-    data.files.forEach(f => {
-      const li = document.createElement('li');
-      const icon = f.type === 'folder' ? '📁' : '📄';
-      li.innerHTML = '<span class="f-icon">' + icon + '</span> ' +
-        '<span>' + f.name + '</span>' +
-        '<span class="f-date">' + f.desc + '</span>';
-      list.appendChild(li);
-    });
-  }
-
+  if (!data.files.length) { list.innerHTML = '<div class="empty">まだファイルがありません</div>'; }
+  else { data.files.forEach(f => {
+    const li = document.createElement('li');
+    li.innerHTML = '<span class="f-icon">' + (f.type==='folder'?'📁':'📄') + '</span><span>' + f.name + '</span><span class="f-date">' + f.desc + '</span>';
+    list.appendChild(li);
+  });}
   document.getElementById('modal').classList.add('show');
 }
-
-function closeModal() {
-  document.getElementById('modal').classList.remove('show');
-}
-
+function closeModal() { document.getElementById('modal').classList.remove('show'); }
 document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
 </script>
 
