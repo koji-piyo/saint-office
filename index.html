@@ -141,14 +141,34 @@
   }
   .footer .gt { color: #c9a84c; font-weight: 700; }
 
-  /* Howto banner */
-  .howto {
-    background: linear-gradient(145deg, #fff8ec, #faf3e4);
-    border: 1.5px dashed #c9a84c; border-radius: 10px;
-    padding: 12px 16px; margin-bottom: 18px; font-size: 0.75em; color: #6a5a40; line-height: 1.6;
+  /* Modal overlay */
+  .modal-overlay {
+    display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.5); z-index: 200;
+    align-items: center; justify-content: center;
   }
-  .howto strong { color: #8a6a30; }
-  .howto code { background: #ede2cc; padding: 1px 5px; border-radius: 3px; font-size: 0.92em; }
+  .modal-overlay.show { display: flex; }
+  .modal {
+    background: #faf3e4; border: 2px solid #c9a84c; border-radius: 14px;
+    padding: 20px; max-width: 500px; width: 90%; max-height: 80vh;
+    overflow-y: auto; position: relative;
+  }
+  .modal h3 { font-size: 1em; color: #5a4a30; margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
+  .modal .close-btn {
+    position: absolute; top: 10px; right: 14px; cursor: pointer;
+    font-size: 1.2em; color: #9a8a6a; background: none; border: none;
+  }
+  .modal .file-list { list-style: none; padding: 0; }
+  .modal .file-list li {
+    padding: 6px 10px; border-bottom: 1px solid #e8d5b0;
+    font-size: 0.8em; color: #5a4a30; cursor: pointer; transition: background 0.15s;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .modal .file-list li:hover { background: #ede2cc; }
+  .modal .file-list li .f-icon { opacity: 0.5; }
+  .modal .file-list li .f-date { color: #9a8a6a; font-size: 0.85em; margin-left: auto; }
+  .modal .dept-path { font-size: 0.7em; color: #9a8a6a; margin-bottom: 8px; font-family: monospace; }
+  .modal .empty { font-size: 0.8em; color: #b0a080; font-style: italic; padding: 12px 0; }
 
   @media (max-width: 768px) {
     .char-grid { grid-template-columns: repeat(3, 1fr); }
@@ -177,20 +197,11 @@
     <span>いちる整体院 Virtual Office</span>
   </div>
 
-  <!-- How to change images -->
-  <div class="howto" id="howto">
-    <strong>画像の差し替え方法:</strong>
-    <code>avatars/</code> フォルダにキャラ画像を置くと自動で反映されます。<br>
-    ファイル名: <code>saga.png</code> <code>mu.png</code> <code>shaka.png</code> <code>camus.png</code> <code>aiolia.png</code> <code>poseidon.png</code> <code>seiya.png</code> <code>shiryu.png</code> <code>hyoga.png</code> <code>shun.png</code> <code>ikki.png</code><br>
-    形式: PNG/JPG/WebP いずれもOK。正方形推奨。
-    <span style="float:right;cursor:pointer;color:#c9a84c;" onclick="this.parentElement.style.display='none'">✕ 閉じる</span>
-  </div>
-
   <!-- ===== Row 1: Gold Saints + Poseidon ===== -->
   <div class="char-grid">
 
     <!-- サガ -->
-    <div class="char-card">
+    <div class="char-card" data-dept="社長室" data-char="サガ" onclick="showDept(this)">
       <div class="tip">
         <div class="t-name">♊ サガ（双子座 / 黄金聖闘士）</div>
         教皇として聖域を統治した戦略家。二つの人格を持つが善の顔で冷静に統括。
@@ -205,7 +216,7 @@
     </div>
 
     <!-- ムウ -->
-    <div class="char-card">
+    <div class="char-card" data-dept="秘書室" data-char="ムウ" onclick="showDept(this)">
       <div class="tip">
         <div class="t-name">🐏 ムウ（牡羊座 / 黄金聖闘士）</div>
         温厚で面倒見がよい聖衣修復の名手。眉なし＆額の2つの赤い点が特徴。
@@ -220,7 +231,7 @@
     </div>
 
     <!-- シャカ -->
-    <div class="char-card">
+    <div class="char-card" data-dept="リサーチ" data-char="シャカ" onclick="showDept(this)">
       <div class="tip">
         <div class="t-name">🙏 シャカ（乙女座 / 黄金聖闘士）</div>
         神に最も近い男。金髪ロングで常に目を閉じている。
@@ -235,7 +246,7 @@
     </div>
 
     <!-- カミュ -->
-    <div class="char-card">
+    <div class="char-card" data-dept="経理" data-char="カミュ" onclick="showDept(this)">
       <div class="tip">
         <div class="t-name">🏺 カミュ（水瓶座 / 黄金聖闘士）</div>
         絶対零度を操る厳格な師匠。ティールグリーンの長髪。
@@ -250,7 +261,7 @@
     </div>
 
     <!-- アイオリア -->
-    <div class="char-card">
+    <div class="char-card" data-dept="営業" data-char="アイオリア" onclick="showDept(this)">
       <div class="tip">
         <div class="t-name">🦁 アイオリア（獅子座 / 黄金聖闘士）</div>
         正義と情熱。短めの茶髪がたてがみのように逆立つ。
@@ -265,7 +276,7 @@
     </div>
 
     <!-- ポセイドン -->
-    <div class="char-card">
+    <div class="char-card" data-dept="投資" data-char="ポセイドン" onclick="showDept(this)">
       <div class="tip">
         <div class="t-name">🔱 ポセイドン（海皇 / 神）</div>
         七つの海を支配する海皇。人間体はジュリアン・ソロ。青い長髪と三叉槍。
@@ -285,7 +296,7 @@
   <div class="char-grid" style="grid-template-columns: repeat(5, 1fr); margin-bottom:22px;">
 
     <!-- 星矢 -->
-    <div class="char-card">
+    <div class="char-card" data-dept="マーケティング" data-char="星矢" onclick="showDept(this)">
       <div class="tip">
         <div class="t-name">🦅 星矢（天馬座 / 青銅聖闘士）</div>
         茶色のツンツン髪。赤い天馬座の聖衣。諦めない熱血の主人公。
@@ -300,7 +311,7 @@
     </div>
 
     <!-- 紫龍 -->
-    <div class="char-card has-notif" data-n="3">
+    <div class="char-card has-notif" data-n="3" data-dept="進行管理" data-char="紫龍" onclick="showDept(this)">
       <div class="tip">
         <div class="t-name">🐉 紫龍（龍座 / 青銅聖闘士）</div>
         長い黒髪を後ろで束ねる。緑の聖衣。堅実な五老峰の修行者。
@@ -315,7 +326,7 @@
     </div>
 
     <!-- 氷河 -->
-    <div class="char-card">
+    <div class="char-card" data-dept="開発" data-char="氷河" onclick="showDept(this)">
       <div class="tip">
         <div class="t-name">🦢 氷河（白鳥座 / 青銅聖闘士）</div>
         金髪。青い白鳥座の聖衣。師カミュの教え子。冷静沈着。
@@ -330,7 +341,7 @@
     </div>
 
     <!-- 瞬 -->
-    <div class="char-card">
+    <div class="char-card" data-dept="患者管理" data-char="瞬" onclick="showDept(this)">
       <div class="tip">
         <div class="t-name">💫 瞬（アンドロメダ座 / 青銅聖闘士）</div>
         緑の髪。優しく繊細な美少年。一輝の弟。ピンク〜緑の聖衣。
@@ -345,7 +356,7 @@
     </div>
 
     <!-- 一輝 -->
-    <div class="char-card">
+    <div class="char-card" data-dept="レビュー" data-char="一輝" onclick="showDept(this)">
       <div class="tip">
         <div class="t-name">🔥 一輝（鳳凰座 / 青銅聖闘士）</div>
         濃紺の短髪が激しく逆立つ。鋭い目つき。最強の青銅聖闘士。瞬の兄。
@@ -461,6 +472,144 @@
     聖闘士オフィス — いちる整体院 Virtual Office
   </div>
 </div>
+
+<!-- Modal -->
+<div class="modal-overlay" id="modal" onclick="if(event.target===this)closeModal()">
+  <div class="modal">
+    <button class="close-btn" onclick="closeModal()">✕</button>
+    <h3 id="modal-title"></h3>
+    <div class="dept-path" id="modal-path"></div>
+    <ul class="file-list" id="modal-files"></ul>
+  </div>
+</div>
+
+<script>
+const deptData = {
+  "社長室": {
+    icon: "♊", folder: "社長室",
+    files: [
+      { name: "CLAUDE.md", desc: "振り分け基準・意思決定ルール" },
+      { name: "decisions/", desc: "意思決定ログ", type: "folder" }
+    ]
+  },
+  "秘書室": {
+    icon: "🐏", folder: "秘書室",
+    files: [
+      { name: "inbox/2026-03-10.md", desc: "未整理メモ" },
+      { name: "todos/2026-03-12.md", desc: "最新TODO" },
+      { name: "todos/2026-03-10.md", desc: "TODO" },
+      { name: "notes/", desc: "患者セッションノート 80件+", type: "folder" },
+      { name: "notes/plaud-intake-log.md", desc: "PLAUD取り込みログ" },
+      { name: "notes/plaud-setup-guide.md", desc: "PLAUDセットアップガイド" }
+    ]
+  },
+  "リサーチ": {
+    icon: "🙏", folder: "リサーチ",
+    files: [
+      { name: "topics/2026-03-22-plaud-analysis.md", desc: "PLAUD分析調査" },
+      { name: "nutrition/INDEX.md", desc: "栄養学リサーチ INDEX" }
+    ]
+  },
+  "マーケティング": {
+    icon: "🦅", folder: "マーケティング",
+    files: [
+      { name: "content-plan/", desc: "コンテンツ企画", type: "folder" },
+      { name: "campaigns/", desc: "キャンペーン管理", type: "folder" }
+    ]
+  },
+  "進行管理": {
+    icon: "🐉", folder: "進行管理",
+    files: [
+      { name: "projects/", desc: "プロジェクト管理", type: "folder" },
+      { name: "tickets/", desc: "チケット管理", type: "folder" }
+    ]
+  },
+  "開発": {
+    icon: "🦢", folder: "開発",
+    files: [
+      { name: "docs/", desc: "技術ドキュメント・設計書", type: "folder" },
+      { name: "debug-log/", desc: "デバッグログ", type: "folder" }
+    ]
+  },
+  "経理": {
+    icon: "🏺", folder: "経理",
+    files: [
+      { name: "moneyforward-summary.md", desc: "MoneyForward総合サマリー" },
+      { name: "2026-moneyforward.md", desc: "2026年 家計簿データ" },
+      { name: "2025-moneyforward.md", desc: "2025年 家計簿データ" },
+      { name: "2024-moneyforward.md", desc: "2024年 家計簿データ" },
+      { name: "2026-kakutei-shinkoku-r07.md", desc: "令和7年 確定申告" },
+      { name: "2025-kakutei-shinkoku-r06.md", desc: "令和6年 確定申告" },
+      { name: "2024-kakutei-shinkoku-r05.md", desc: "令和5年 確定申告" },
+      { name: "2026-03-sales-analysis.md", desc: "2026年3月 売上分析" },
+      { name: "2026-03-financial-overview.md", desc: "2026年3月 財務概要" }
+    ]
+  },
+  "営業": {
+    icon: "🦁", folder: "営業",
+    files: [
+      { name: "clients/", desc: "クライアント情報", type: "folder" },
+      { name: "proposals/", desc: "提案書", type: "folder" }
+    ]
+  },
+  "患者管理": {
+    icon: "💫", folder: "患者管理",
+    files: [
+      { name: "patients/", desc: "患者カルテ", type: "folder" },
+      { name: "sessions/", desc: "セッションノート（SOAP）", type: "folder" },
+      { name: "voice-data/", desc: "PLAUDボイスデータ", type: "folder" }
+    ]
+  },
+  "投資": {
+    icon: "🔱", folder: "投資",
+    files: [
+      { name: "analysis/", desc: "投資分析", type: "folder" },
+      { name: "portfolio/", desc: "ポートフォリオ", type: "folder" },
+      { name: "reports/", desc: "投資レポート", type: "folder" }
+    ]
+  },
+  "レビュー": {
+    icon: "🔥", folder: "レビュー",
+    files: [
+      { name: "_template.md", desc: "レビューテンプレート" }
+    ]
+  }
+};
+
+function showDept(el) {
+  const dept = el.dataset.dept;
+  const char = el.dataset.char;
+  const data = deptData[dept];
+  if (!data) return;
+
+  document.getElementById('modal-title').innerHTML = data.icon + ' ' + char + '（' + dept + '）';
+  document.getElementById('modal-path').textContent = '.company/' + data.folder + '/';
+
+  const list = document.getElementById('modal-files');
+  list.innerHTML = '';
+
+  if (data.files.length === 0) {
+    list.innerHTML = '<div class="empty">まだファイルがありません</div>';
+  } else {
+    data.files.forEach(f => {
+      const li = document.createElement('li');
+      const icon = f.type === 'folder' ? '📁' : '📄';
+      li.innerHTML = '<span class="f-icon">' + icon + '</span> ' +
+        '<span>' + f.name + '</span>' +
+        '<span class="f-date">' + f.desc + '</span>';
+      list.appendChild(li);
+    });
+  }
+
+  document.getElementById('modal').classList.add('show');
+}
+
+function closeModal() {
+  document.getElementById('modal').classList.remove('show');
+}
+
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+</script>
 
 </body>
 </html>
